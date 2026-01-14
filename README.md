@@ -1,7 +1,11 @@
 ## 🎯 Objectif du projet
 
 Ce projet a été réalisé dans le cadre du module **Malware et Sécurité Offensive en Python**.  
-L’objectif est de comprendre l’architecture interne d’un ransomware moderne en développant un **client (malware pédagogique)** et un **serveur de contrôle (C2)** dans un environnement **strictement isolé** (VM dédiée).
+L’objectif est de comprendre l’architecture interne d’un ransomware moderne en développant :
+- un **client (malware pédagogique)**
+- un **serveur de contrôle (C2)**
+- un **protocole de communication** simple basé en JSON
+Le tout dans un environnement **strictement isolé** (VM dédiée).
 
 Le projet permet d’explorer :
 - la manipulation du système de fichiers  
@@ -10,7 +14,7 @@ Le projet permet d’explorer :
 - la structuration modulaire d’un malware  
 - l’analyse des limites d’un ransomware artisanal  
 
-Ce travail est **strictement pédagogique** et ne doit jamais être utilisé hors laboratoire.
+### ⚠️ Ce travail est **strictement pédagogique** et ne doit jamais être utilisé hors laboratoire (VM dédiée).
 
 ---
 
@@ -60,7 +64,7 @@ Le projet est composé de la manière suivante :
 - **main.py** : socket d’écoute + gestion multi‑clients  
 - **handler.py** : parsing JSON + traitement des messages  
 - **storage.py** : stockage persistant des victimes  
-- **victims.json** : base de données locale  
+- **victims.json** : base de données locale des machines enregistrées
 
 ---
 
@@ -68,14 +72,13 @@ Le projet est composé de la manière suivante :
 
 ### ✔️ Côté client
 
-- Génération d’une clé aléatoire depuis `/dev/urandom`  
-- Filtrage ASCII pour obtenir uniquement `A-Z`  
-- Récupération de l’UUID machine via `/proc/sys/kernel/random/uuid`  
-- Chiffrement XOR réversible  
+- Génération d’une clé aléatoire `A-Z`  
+- Récupération de l’UUID machine via `/proc/sys/kernel/random/uuid`
+- Envoi initial : `{uuid, key}` 
+- Chiffrement XOR réversible de ~/ransomware_test 
 - Parcours récursif du `$HOME`  
 - Communication TCP avec le serveur  
-- Envoi initial : `{uuid, key}`  
-- Réception et traitement de commandes (structure prête)  
+- Réception et traitement structurés de commandes
 
 ### ✔️ Côté serveur
 
@@ -83,7 +86,7 @@ Le projet est composé de la manière suivante :
 - Gestion multi‑clients via threads  
 - Parsing JSON ligne par ligne  
 - Enregistrement des victimes dans `victims.json`  
-- Architecture extensible pour les commandes C2  
+- Affichage propre des réponses ([RESULT]...)
 
 ---
 
@@ -103,13 +106,27 @@ Les messages échangés entre client et serveur utilisent un format **JSON** sim
 }
 ```
 
-### 📤 Commandes (structure prévue)
+### 📤 Commandes C2
 
-- `cmd` : exécution de commande système  
-- `encrypt` / `decrypt` : opérations sur fichiers  
-- `upload` / `download` : transfert de fichiers  
+**Serveur → Client**
 
-Ces commandes sont définies dans l’architecture mais leur logique dépend de l’implémentation choisie.
+```json
+{"type": "encrypt"}
+{"type": "decrypt"}
+{"type": "ls"}
+{"type": "pwd"}
+{"type": "uname"}  
+```
+
+### 📬 Réponses du client
+
+**Client → Serveur**
+
+```json
+{"type": "ls_result", "files": [...]}
+{"type": "pwd_result", "cwd": "..."}
+{"type": "encrypt_result", "status": "ok"}
+```
 
 ---
 
@@ -142,33 +159,31 @@ Le client :
 - génère une clé  
 - récupère l’UUID  
 - se connecte au serveur  
-- envoie les informations  
-- chiffre le `$HOME`  
-- attend les commandes  
-
-⚠️ **À exécuter uniquement dans une VM dédiée.**
+- chiffre le dossier test
+- attend les commandes
 
 ---
 
 ## 🧪 Tests réalisés
 
-- Vérification du XOR (chiffrement/déchiffrement identiques)  
-- Test de génération de clé (32 caractères A‑Z)  
-- Test de récupération UUID  
-- Test de connexion client → serveur  
-- Test d’enregistrement dans `victims.json`  
-- Test de parsing JSON côté serveur  
+- Vérification du XOR (encrypt/decrypt identiques)
+- Test de génération de clé (32 caractères A‑Z)
+- Test de récupération UUID
+- Test de connexion client → serveur
+- Test d’enregistrement dans victims.json
+- Test des commandes pédagogiques (ls, pwd, uname)
+- Test du cycle complet encrypt → decrypt
 
 ---
 
-## 🛡️ Limites et faiblesses du ransomware
+## 🛡️ Limites et faiblesses volontaires du ransomware
 
 Ce ransomware est **artisanal** et présente de nombreuses faiblesses :
 
 ### 🔸 Chiffrement faible
 - XOR est trivial à casser  
 - Clé transmise en clair au serveur  
-- Pas de chiffrement asymétrique  
+- Pas de chiffrement asymétrique (RSA/AES)
 
 ### 🔸 Détection facile
 - Activité réseau non chiffrée  
