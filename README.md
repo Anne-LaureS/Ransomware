@@ -16,22 +16,33 @@ Ce travail est **strictement pédagogique** et ne doit jamais être utilisé hor
 
 ## 🏗️ Architecture globale
 
-Le projet est divisé en deux composants :
-
-```
-client/
-│── main.py
-│── crypto.py
-│── system.py
-│── network.py
-│── commands.py
-
-server/
-│── main.py
-│── handler.py
-│── storage.py
-│── victims.json
-```
+Le projet est composé de la manière suivante :
+                +----------------------+
+                |      Opérateur       |
+                |  (menu texte C2)     |
+                +----------+-----------+
+                           |
+                           v
+                  +--------+--------+
+                  |     Serveur C2  |
+                  |  main.py        |
+                  |  handler.py     |
+                  |  storage.py     |
+                  +--------+--------+
+                           |
+                 Connexions TCP (JSON)
+                           |
+           +---------------+----------------+
+           |                                |
+           v                                v
+ +-------------------+             +-------------------+
+ |     Client 1      |             |     Client 2      |
+ |  main.py          |             |  main.py          |
+ |  network.py       |             |  network.py       |
+ |  system.py        |             |  system.py        |
+ |  crypto.py        |             |  crypto.py        |
+ |  commands.py      |             |  commands.py      |
+ +-------------------+             +-------------------+
 
 ### 🔹 Côté client
 
