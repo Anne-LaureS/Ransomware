@@ -43,6 +43,7 @@ Le projet est composé de la manière suivante :
  |  system.py        |             |  system.py        |
  |  crypto.py        |             |  crypto.py        |
  |  commands.py      |             |  commands.py      |
+ | ransomware_test/  |             | ransomware_test/  |
  +-------------------+             +-------------------+
 ```
 
