@@ -11,7 +11,7 @@ import json
 
 from handler import handle_client
 from storage import load_victims
-from operator import operator_loop
+from operator_menu import operator_loop
 
 
 HOST = "0.0.0.0"
