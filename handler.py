@@ -53,6 +53,12 @@ def handle_client(conn, addr, register_client_uuid):
 
                 mtype = message.get("type")
 
+                # --- Nouveau bloc : gestion des réponses du client ---
+                if mtype and mtype.endswith("_result"):
+                    print(f"[RESULT] Réponse du client : {message}")
+                    continue
+                # -----------------------------------------------------
+
                 if mtype == "register":
                     handle_register(message, register_client_uuid, conn)
                 else:
