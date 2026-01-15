@@ -64,6 +64,7 @@ Le projet est composé de la manière suivante :
 - **main.py** : socket d’écoute + gestion multi‑clients  
 - **handler.py** : parsing JSON + traitement des messages  
 - **storage.py** : stockage persistant des victimes  
+- **operator_menu.py** : interface texte permettant à l’opérateur d’interagir avec le serveur (liste des victimes, envoi de commandes JSON, gestion des UUID connectés)
 - **victims.json** : base de données locale des machines enregistrées
 
 ---
