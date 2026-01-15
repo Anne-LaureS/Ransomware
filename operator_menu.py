@@ -1,4 +1,4 @@
-# server/operator.py
+# server/operator_menu.py
 
 """
 Interface opérateur très simple en ligne de commande.
