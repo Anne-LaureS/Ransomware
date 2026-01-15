@@ -1,6 +1,6 @@
 ## 🎯 Objectif du projet
 
-Ce projet a été réalisé dans le cadre du module **Malware et Sécurité Offensive en Python**.  
+Ce projet a été réalisé dans le cadre du module **Ecriture d'un malware en Python**.  
 L’objectif est de comprendre l’architecture interne d’un ransomware moderne en développant :
 - un **client (malware pédagogique)**
 - un **serveur de contrôle (C2)**
