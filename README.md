@@ -116,8 +116,10 @@ Les messages échangés entre client et serveur utilisent un format **JSON** sim
 {"type": "decrypt"}
 {"type": "ls"}
 {"type": "pwd"}
-{"type": "uname"}  
+{"type": "uname"}
+{"type": "cmd", "command": "texte"}  
 ```
+La commande cmd est volontairement non exécutée. Elle sert uniquement à montrer comment un ransomware pourrait recevoir une commande système, mais sans jamais l’exécuter pour des raisons de sécurité.
 
 ### 📬 Réponses du client
 
