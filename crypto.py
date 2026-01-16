@@ -43,13 +43,5 @@ def xor_data(data: ByteString, key: str) -> bytes:
     Retour :
         Les données XORées (bytes)
     """
-    # TODO : implémenter le XOR réel dans ta VM
-    # Exemple de structure :
-    #
-    # key_bytes = key.encode()
-    # out = bytearray()
-    # for i, b in enumerate(data):
-    #     out.append(b ^ key_bytes[i % len(key_bytes)])
-    # return bytes(out)
 
     return data  # placeholder pédagogique
